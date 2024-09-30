@@ -68,12 +68,14 @@ resource "aws_vpn_gateway" "prd_vpn_gw" {
   }
 }
 
-# 버지니아 리전의 Terraform 상태 참조
 data "terraform_remote_state" "virginia" {
-  backend = "local"
+  backend = "remote"  # Terraform Cloud를 백엔드로 설정
 
   config = {
-    path = "https://github.com/SongTaeHoon/team1/tree/main/TF_On-premise/terraform.tfstate"  # 로컬 경로 참조
+    organization = "Cloud_1team"
+    workspaces = {
+      name = "Terraform-OnPremise"  # Terraform Cloud 워크스페이스 이름
+    }
   }
 }
 
