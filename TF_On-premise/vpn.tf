@@ -114,14 +114,15 @@ resource "aws_instance" "vpn_gateway_instance" {
 
 
 terraform {
-  backend "local" {
-    path = "C:/TF_On-premise/terraform.tfstate"
+  backend "remote" {
+    organization = "Cloud_1team"
+
+    workspaces {
+      name = "Terraform-OnPremise"
+    }
   }
 }
 
-output "onprem_vpn_eip_public_ip" {
-  value = aws_eip.onprem_vpn_eip.public_ip
-}
 
 # Elastic IP 생성
 resource "aws_eip" "onprem_vpn_eip" {
