@@ -57,15 +57,34 @@ resource "aws_iam_role" "dms_vpc_role" {
   })
 }
 
-
+resource "aws_iam_policy" "dms_vpc_policy" {
+  name        = "dms-vpc-policy"
+  description = "IAM Policy for DMS VPC Role"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "ec2:Describe*",
+          "ec2:CreateNetworkInterface",
+          "ec2:DeleteNetworkInterface",
+          "ec2:AttachNetworkInterface"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
 
 
 # DMS VPC IAM 기존 정책을 참조
 resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
   role       = aws_iam_role.dms_vpc_role.name
-  policy_arn = "arn:aws:iam::784849575779:policy/dms-vpc-policy"  # 기존 정책의 ARN
-
+  policy_arn = aws_iam_policy.dms_vpc_policy.arn
 }
+
+
 
 
 
