@@ -13,11 +13,6 @@ resource "aws_instance" "onprem_bastion" {
   subnet_id              = aws_subnet.onprem_public.id
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
 
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
-
   # 고정된 퍼블릭 IP 할당
   associate_public_ip_address = true
   # 고정된 프라이빗 IP 할당
@@ -36,10 +31,6 @@ resource "aws_instance" "onprem_lb1" {
   key_name               = "awesomekey"
   vpc_security_group_ids = [aws_security_group.internal_sg.id]
 
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
 
   private_ip = "10.240.1.238"  # 고정된 프라이빗 IP
 
@@ -55,10 +46,6 @@ resource "aws_instance" "onprem_lb2" {
   key_name               = "awesomekey"
   vpc_security_group_ids = [aws_security_group.internal_sg.id]
 
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
 
   private_ip = "10.240.1.239"  # 고정된 프라이빗 IP
 
@@ -75,11 +62,6 @@ resource "aws_instance" "onprem_master" {
   subnet_id     = aws_subnet.onprem_public.id
   key_name      = "awesomekey"
   vpc_security_group_ids = [aws_security_group.internal_sg.id]
-
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
 
   private_ip = element(["10.240.1.241", "10.240.1.242", "10.240.1.243"], count.index)
 
@@ -108,11 +90,6 @@ resource "aws_instance" "onprem_worker" {
   subnet_id     = aws_subnet.onprem_public.id
   key_name      = "awesomekey"
   vpc_security_group_ids = [aws_security_group.internal_sg.id]
-
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
 
   private_ip = element(["10.240.1.244", "10.240.1.245", "10.240.1.246"], count.index)
 
