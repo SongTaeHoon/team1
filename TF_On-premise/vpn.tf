@@ -71,7 +71,6 @@ resource "aws_security_group" "onprem_vpn_sg" {
 }
 
 
-
 # Amazon Linux 2 AMI 검색 
 data "aws_ami" "amazon_linux" {
   most_recent = true
