@@ -85,7 +85,6 @@ resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
 }
 
 
-
 # DMS 복제 인스턴스 (버지니아)
 resource "aws_dms_replication_instance" "onprem_dms_instance" {
   replication_instance_id     = "onprem-dms-instance"
@@ -114,4 +113,3 @@ resource "aws_dms_replication_subnet_group" "onprem_dms_subnet_group" {
     Name = "onprem-dms-subnet-group"
   }
 }
-
