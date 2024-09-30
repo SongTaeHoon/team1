@@ -144,7 +144,6 @@ resource "aws_dms_replication_instance" "prd_dms_instance" {
   }
 }
 
-
 # DMS 서브넷 그룹 생성
 resource "aws_dms_replication_subnet_group" "prd_dms_subnet_group" {
   replication_subnet_group_id = "prd-dms-subnet-group"
