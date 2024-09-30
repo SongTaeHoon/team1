@@ -74,7 +74,7 @@ data "terraform_remote_state" "virginia" {
   config = {
     organization = "Cloud_1team"
     workspaces = {
-      name = "Terraform-OnPremise"  # Terraform Cloud 워크스페이스 이름
+      name = "Terraform-OnPremise"  #Terraform Cloud 워크스페이스 이름
     }
   }
 }
