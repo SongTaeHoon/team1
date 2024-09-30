@@ -85,7 +85,6 @@ resource "aws_customer_gateway" "prd_vpn_cgw" {
   ip_address = data.terraform_remote_state.virginia.outputs.onprem_vpn_eip_public_ip  # 버지니아 Elastic IP를 사용
   type       = "ipsec.1"
 
-
   tags = {
     Name = "prd-vpn-cgw"
   }
