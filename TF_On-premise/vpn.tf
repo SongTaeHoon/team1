@@ -107,11 +107,6 @@ resource "aws_instance" "vpn_gateway_instance" {
   # 키페어
   key_name = "awesomekey"
 
-   # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
-
   tags = {
     Name = "vpn-gateway-instance"
   }
@@ -132,11 +127,6 @@ output "onprem_vpn_eip_public_ip" {
 resource "aws_eip" "onprem_vpn_eip" {
   vpc = true
   instance = aws_instance.vpn_gateway_instance.id  # EC2 인스턴스에 Elastic IP 연결
-
-  # 리소스가 삭제되지 않도록 방지
-  lifecycle {
-    prevent_destroy = true   
-  }
 
 
   tags = {
