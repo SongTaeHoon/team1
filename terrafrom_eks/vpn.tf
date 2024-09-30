@@ -91,7 +91,6 @@ resource "aws_customer_gateway" "prd_vpn_cgw" {
 }
 
 
-
 # VPN 연결 (서울 → 버지니아)
 resource "aws_vpn_connection" "prd_to_virginia_vpn" {
   customer_gateway_id = aws_customer_gateway.prd_vpn_cgw.id
