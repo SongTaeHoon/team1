@@ -82,7 +82,7 @@ data "terraform_remote_state" "virginia" {
 # 고객 게이트웨이에 퍼블릭 IP 사용 (Elastic IP)
 resource "aws_customer_gateway" "prd_vpn_cgw" {
   bgp_asn    = 65000
-  ip_address = data.terraform_remote_state.virginia.outputs.onprem_vpn_eip_public_ip  # 버지니아 Elastic IP를 사용
+  ip_address = data.terraform_remote_state.virginia.outputs.onprem_vpn_eip_public_ip  # Terraform-OnPremise Elastic IP를 사용
   type       = "ipsec.1"
 
   tags = {
