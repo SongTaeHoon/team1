@@ -73,7 +73,7 @@ data "terraform_remote_state" "virginia" {
   backend = "local"
 
   config = {
-    path = "C:/TF_On-premise/terraform.tfstate"  # 로컬 경로 참조
+    path = "https://github.com/SongTaeHoon/team1/tree/main/TF_On-premise/terraform.tfstate"  # 로컬 경로 참조
   }
 }
 
