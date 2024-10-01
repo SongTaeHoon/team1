@@ -34,7 +34,6 @@ resource "aws_security_group" "prd_dms_sg" {
     cidr_blocks = ["10.240.0.0/16"]
   }
 
-
   ingress {
     from_port   = -1           # ICMP 전체 허용 (ping 포함)
     to_port     = -1
