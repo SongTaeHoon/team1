@@ -101,7 +101,6 @@ resource "aws_iam_policy" "dms_vpc_policy" {
   })
 }
 
-
 # IAM 역할에 정책 연결
 resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
   role       = aws_iam_role.dms_vpc_role.name
