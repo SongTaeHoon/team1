@@ -57,19 +57,43 @@ resource "aws_iam_role" "dms_vpc_role" {
   })
 }
 
+# DMS VPC IAM 정책 생성 (모든 필요한 권한 포함)
 resource "aws_iam_policy" "dms_vpc_policy" {
   name        = "dms-vpc-policy"
-  description = "IAM Policy for DMS VPC Role"
-  policy      = jsonencode({
+  description = "Policy for DMS VPC Access"
+
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
-          "ec2:Describe*",
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeDBInstances",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
           "ec2:CreateNetworkInterface",
           "ec2:DeleteNetworkInterface",
-          "ec2:AttachNetworkInterface"
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:AttachNetworkInterface",
+          "ec2:DescribeInstances",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeVpcEndpoints",
+          "ec2:DescribeAvailabilityZones",
+          "dms:CreateReplicationInstance",     # DMS 복제 인스턴스 생성 권한
+          "dms:CreateReplicationSubnetGroup",  # DMS 서브넷 그룹 생성 권한
+          "dms:DescribeReplicationInstances",
+          "dms:DescribeReplicationSubnetGroups",
+          "dms:DeleteReplicationInstance",     # DMS 인스턴스 삭제 권한
+          "dms:ModifyReplicationInstance",     # DMS 인스턴스 수정 권한
+          "dms:DescribeReplicationTasks",      # DMS 태스크 설명 권한
+          "dms:StartReplicationTask",          # DMS 태스크 시작 권한
+          "dms:StopReplicationTask",           # DMS 태스크 중지 권한
+          "dms:DescribeEndpoints",             # DMS 엔드포인트 설명 권한
+          "dms:ModifyEndpoint",                # DMS 엔드포인트 수정 권한
+          "dms:CreateEndpoint",                # DMS 엔드포인트 생성 권한
+          "dms:DeleteEndpoint"                 # DMS 엔드포인트 삭제 권한
         ],
         Resource = "*"
       }
@@ -78,12 +102,11 @@ resource "aws_iam_policy" "dms_vpc_policy" {
 }
 
 
-# DMS VPC IAM 기존 정책을 참조
+# IAM 역할에 정책 연결
 resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
   role       = aws_iam_role.dms_vpc_role.name
   policy_arn = aws_iam_policy.dms_vpc_policy.arn
 }
-
 
 # DMS 복제 인스턴스 (버지니아)
 resource "aws_dms_replication_instance" "onprem_dms_instance" {
