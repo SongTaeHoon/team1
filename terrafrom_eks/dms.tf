@@ -56,7 +56,7 @@ resource "aws_security_group" "prd_dms_sg" {
 }
 
 # DMS VPC IAM 역할 생성
-resource "aws_iam_role" "dms_vpc_role" {
+resource "aws_iam_role" "dms_vpc_role_seoul" {
   name = "dms-vpc-role-seoul"
 
   assume_role_policy = jsonencode({
@@ -78,7 +78,7 @@ resource "aws_iam_role" "dms_vpc_role" {
 }
 
 # DMS VPC IAM 정책 생성 (모든 필요한 권한 포함)
-resource "aws_iam_policy" "dms_vpc_policy" {
+resource "aws_iam_policy" "dms_vpc_policy_seoul" {
   name        = "dms-vpc-policy-seoul"
   description = "Policy for DMS VPC Access"
 
@@ -123,8 +123,8 @@ resource "aws_iam_policy" "dms_vpc_policy" {
 
 # IAM 역할에 정책 연결
 resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
-  role       = aws_iam_role.dms_vpc_role.name
-  policy_arn = aws_iam_policy.dms_vpc_policy.arn
+  role       = aws_iam_role.dms_vpc_role_seoul.name
+  policy_arn = aws_iam_policy.dms_vpc_policy_seoul.arn
 }
 
 # DMS 복제 인스턴스 (서울)
