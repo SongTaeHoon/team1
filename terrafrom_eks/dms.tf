@@ -55,78 +55,16 @@ resource "aws_security_group" "prd_dms_sg" {
   }
 }
 
-# DMS VPC IAM 역할 생성
-resource "aws_iam_role" "dms_vpc_role_seoul" {
-  name = "dms-vpc-role-seoul"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "dms.amazonaws.com"
-        },
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = {
-    Name = "dms-vpc-role-seoul"
-  }
+# 버지니아 리전에서 생성된 IAM 역할을 참조
+data "aws_iam_role" "existing_dms_vpc_role" {
+  name = "dms-vpc-role"
 }
 
-# DMS VPC IAM 정책 생성 (모든 필요한 권한 포함)
-resource "aws_iam_policy" "dms_vpc_policy_seoul" {
-  name        = "dms-vpc-policy-seoul"
-  description = "Policy for DMS VPC Access"
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ec2:DescribeDBInstances",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:CreateNetworkInterface",
-          "ec2:DeleteNetworkInterface",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:AttachNetworkInterface",
-          "ec2:DescribeInstances",
-          "ec2:DescribeRouteTables",
-          "ec2:DescribeNatGateways",
-          "ec2:DescribeVpcEndpoints",
-          "ec2:DescribeAvailabilityZones",
-          "dms:CreateReplicationInstance",     # DMS 복제 인스턴스 생성 권한
-          "dms:CreateReplicationSubnetGroup",  # DMS 서브넷 그룹 생성 권한
-          "dms:DescribeReplicationInstances",
-          "dms:DescribeReplicationSubnetGroups",
-          "dms:DeleteReplicationInstance",     # DMS 인스턴스 삭제 권한
-          "dms:ModifyReplicationInstance",     # DMS 인스턴스 수정 권한
-          "dms:DescribeReplicationTasks",      # DMS 태스크 설명 권한
-          "dms:StartReplicationTask",          # DMS 태스크 시작 권한
-          "dms:StopReplicationTask",           # DMS 태스크 중지 권한
-          "dms:DescribeEndpoints",             # DMS 엔드포인트 설명 권한
-          "dms:ModifyEndpoint",                # DMS 엔드포인트 수정 권한
-          "dms:CreateEndpoint",                # DMS 엔드포인트 생성 권한
-          "dms:DeleteEndpoint"                 # DMS 엔드포인트 삭제 권한
-        ],
-        Resource = "*"
-      }
-    ]
-  })
-}
-
-# IAM 역할에 정책 연결
+# 버지니아 리전에서 생성된 정책을 직접 참조
 resource "aws_iam_role_policy_attachment" "dms_vpc_role_policy_attachment" {
-  role       = aws_iam_role.dms_vpc_role_seoul.name
-  policy_arn = aws_iam_policy.dms_vpc_policy_seoul.arn
+  role       = data.aws_iam_role.existing_dms_vpc_role.name
+  policy_arn = "arn:aws:iam::784849575779:policy/dms-vpc-policy"
 }
-
 # DMS 복제 인스턴스 (서울)
 resource "aws_dms_replication_instance" "prd_dms_instance" {
   replication_instance_id     = "prd-dms-instance"
