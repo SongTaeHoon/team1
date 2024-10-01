@@ -57,7 +57,7 @@ resource "aws_security_group" "prd_dms_sg" {
 
 # DMS VPC IAM 역할 생성
 resource "aws_iam_role" "dms_vpc_role" {
-  name = "dms-vpc-role"
+  name = "dms-vpc-role-seoul"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -73,13 +73,13 @@ resource "aws_iam_role" "dms_vpc_role" {
   })
 
   tags = {
-    Name = "dms-vpc-role"
+    Name = "dms-vpc-role-seoul"
   }
 }
 
 # DMS VPC IAM 정책 생성 (모든 필요한 권한 포함)
 resource "aws_iam_policy" "dms_vpc_policy" {
-  name        = "dms-vpc-policy"
+  name        = "dms-vpc-policy-seoul"
   description = "Policy for DMS VPC Access"
 
   policy = jsonencode({
